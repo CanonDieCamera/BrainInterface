@@ -34,7 +34,9 @@ def readData(classToRead: str, testSamples: float):
 
     """
     trainingSet = []
+    trainingSetLabel = []
     testSet = []
+    testSetLabel = []
     
     #To have the classes seperated
     classToRead = classToRead.replace(" ", "")
@@ -44,21 +46,33 @@ def readData(classToRead: str, testSamples: float):
     for el in classToRead:
         match el:
             case "right":
-                t_trainingSet, t_testSet = _readClass(pathRight, testSamples)
+                t_trainingSet, t_testSet, t_trainingSetLabel, t_testSetLabel = _readClass(pathRight, testSamples, "right")
+                
                 trainingSet += t_trainingSet
                 testSet += t_testSet
+                
+                trainingSetLabel += t_trainingSetLabel
+                testSetLabel += t_testSetLabel
+                
             case "left":
-                t_trainingSet, t_testSet = _readClass(pathLeft, testSamples)
+                t_trainingSet, t_testSet, t_trainingSetLabel, t_testSetLabel  = _readClass(pathLeft, testSamples, "left")
+                
                 trainingSet += t_trainingSet
                 testSet += t_testSet
+                
+                trainingSetLabel += t_trainingSetLabel
+                testSetLabel += t_testSetLabel
+                
             case _:
                 print("Error: Class name not found")
     
-    return trainingSet, testSet
+    return trainingSet, testSet, trainingSetLabel, testSetLabel
             
-def _readClass(path: str, testSamples: float):
+def _readClass(path: str, testSamples: float, label: str):
     trainingSet = []
     testSet = []
+    trainingSetLabel = []
+    testSetLabel = []
     
     file = open(path + 'save.txt', 'r')
     count = int(file.read())
@@ -68,9 +82,11 @@ def _readClass(path: str, testSamples: float):
         
         if(r.random() < testSamples):
             testSet.append(data)
+            testSetLabel.append(label)
         else:
             trainingSet.append(data)
-    return trainingSet, testSet
+            trainingSetLabel.append(label)
+    return trainingSet, testSet, trainingSetLabel, testSetLabel
 
 
 """----------------------Modify-Data-------------------------------"""
