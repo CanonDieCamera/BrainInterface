@@ -12,6 +12,8 @@ pathRight = "TestData/Actions/RIGHT/"
 pathLeft = "TestData/Actions/LEFT/"
 
 
+"""-----------------------Read-Data--------------------------------"""
+
 def readData(classToRead: str, testSamples: float):
     """
     Read the Data from one or multiple classes (seperated by comma) and returns to you a sorted (unshuffled) trainingSet and testSet in the ratio you specified.
@@ -69,4 +71,15 @@ def _readClass(path: str, testSamples: float):
         else:
             trainingSet.append(data)
     return trainingSet, testSet
-        
+
+
+"""----------------------Modify-Data-------------------------------"""
+
+def splitComplex(complexArrayToSplit: np.array):
+    arrayReal = complexArrayToSplit.real
+    arrayImag = complexArrayToSplit.imag
+    
+    arrayComplex = np.empty((complexArrayToSplit.shape[0], complexArrayToSplit.shape[1], 2))
+    arrayComplex[ : , : , 0] = arrayReal
+    arrayComplex[ : , : , 1] = arrayImag
+    return arrayComplex
