@@ -67,6 +67,50 @@ def readData(classToRead: str, testSamples: float):
                 print("Error: Class name not found")
     
     return trainingSet, testSet, trainingSetLabel, testSetLabel
+
+def readData(classToRead: str):
+    """
+    Read the Data from one or multiple classes (seperated by comma) and returns to you a sorted (unshuffled) trainingSet.
+
+    Parameters
+    ----------
+    classToRead : str
+        Specify the classes you want to read. Seperate multiple classes by comma.
+
+    Returns
+    -------
+    dataSet : list
+        List of arrays
+    dataSetLabel : list
+        List of Labels for dataSet
+
+    """
+    dataSet = []
+    dataSetLabel = []
+    
+    #To have the classes seperated
+    classToRead = classToRead.replace(" ", "")
+    classToRead = classToRead.lower()
+    classToRead = classToRead.split(",")
+    
+    for el in classToRead:
+        match el:
+            case "right":
+                t_dataSet, t_dataSetLabel = _readClass(pathRight, "right")
+                
+                dataSet += t_dataSet
+                dataSetLabel += t_dataSetLabel
+                
+            case "left":
+                t_dataSet, t_dataSetLabel  = _readClass(pathLeft, "left")
+                
+                dataSet += t_dataSet
+                dataSetLabel += t_dataSetLabel
+                
+            case _:
+                print("Error: Class name not found")
+    
+    return dataSet, dataSetLabel
             
 def _readClass(path: str, testSamples: float, label: str):
     trainingSet = []
@@ -87,6 +131,21 @@ def _readClass(path: str, testSamples: float, label: str):
             trainingSet.append(data)
             trainingSetLabel.append(label)
     return trainingSet, testSet, trainingSetLabel, testSetLabel
+
+def _readClass(path: str, label: str):
+    dataSet = []
+    dataSetLabel = []
+    
+    file = open(path + 'save.txt', 'r')
+    count = int(file.read())
+    
+    for i in range(count):
+        data = np.load(path + "data{}.npy".format(i))
+        
+        dataSet.append(data)
+        dataSetLabel.append(label)
+
+    return dataSet, dataSetLabel
 
 
 """----------------------Modify-Data-------------------------------"""
